@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Brandreth Statistics</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+		<style>
+			body {
+				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+		</style>
+		<script type='text/javascript'>
+			function generateFilterURL() {
+				var events = document.getElementById('event');
+				var eventSelection = events.options[events.selectedIndex].value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+				var year = document.getElementById('year');
+				var yearSelection = year.options[year.selectedIndex].value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+				var season = document.getElementById('season');
+				var seasonSelection = season.options[season.selectedIndex].value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+				var descending = document.getElementById('descendingRadio');
+				var descendingSelection = descending.checked;
+
+				var ascending = document.getElementById('ascendingRadio');
+				var ascendingSelection = ascending.checked;
+
+				var name = document.getElementById('name');
+				var nameSelection = name.value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+				var sortType = '0';
+				if(ascendingSelection)
+					sortType = '1';
+
+				var url = '/trips/filter/' + eventSelection + ',' + yearSelection + ',' + seasonSelection + ',' + sortType + ',' + nameSelection;
+				window.location = url;
+			}
+		</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="brand" href="/">Brandreth Statistics</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="/leaderboard">Leaderboard</a></li>
+							<li><a href="/stats">Statistics</a></li>
+							<li class="active"><a href="/trips">Trips</a></li>
+							<li><a href="/visitors">Visitors</a></li>
+							<li><a href="/search">Search</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="container">
+		</div>
+		<div class="span3 bs-docs-sidebar">
+			<p>Event</p>
+			<select id="event">
+				<option>Any</option>
+				EVENTS
+			</select>
+			<p>Year</p>
+			<select id="year">
+				<option>Any</option>
+				YEARS
+			</select>
+			<p>Season</p>
+			<select id="season">
+				<option>Any</option>
+				<option>Spring</option>
+				<option>Summer</option>
+				<option>Fall</option>
+				<option>Winter</option>
+			</select>
+			<p>Order</p>
+			<label class="radio">
+				<input type="radio" name="displayOrder" id="descendingRadio" value="descending" checked>
+				Descending
+			</label>
+			<label class="radio">
+				<input type="radio" name="displayOrder" id="ascendingRadio" value="ascending">
+				Ascending
+			</label>
+			<p>Visitor Name</p>
+			<input type="text" id="name" placeholder="Name">
+			<button class="btn btn-large" type="button" id="refresh" onclick='generateFilterURL()'>Refresh</button>
+		</div>
+
+		<div class="span9">
+			<h1>Trips</h1>
+			TRIPS
+		</div>
+	</body>
+</html>
