@@ -57,6 +57,17 @@
 
 				var chart3 = new google.visualization.PieChart(document.getElementById('visitor_sources'));
 				chart3.draw(data3, options3);
+
+				//Trip reasons: Pie chart
+				var data4 = new google.visualization.arrayToDataTable(
+					DATASET4
+				);
+
+				var options4 = {
+				};
+
+				var chart4 = new google.visualization.PieChart(document.getElementById('trip_reasons'));
+				chart4.draw(data4, options4);
 			}
 		</script>
 		
@@ -90,6 +101,8 @@
 				<li><a href="#2"><i class="icon-chevron-right"></i> Visitors per trip</a></li>
 				<li class="divider"></li>
 				<li><a href="#3"><i class="icon-chevron-right"></i> Sources of Visitors</a></li>
+				<li class="divider"></li>
+				<li><a href="#4"><i class="icon-chevron-right"></i> Trip Reasons</a></li>
 			</ul>
 		</div>
 		<div class="span9 bs-docs-sidebar" style="position:relative;left:0px;right:0px;">
@@ -99,6 +112,8 @@
 			<div id='visitors_per_trip' style="height:600px;width:100%;"></div>
 			<h1 class="text-center" id="3">Sources of Visitors</h1>
 			<div id='visitor_sources' style="height:600px;width:100%;"></div>
+			<h1 class="text-center" id="4">Trip Reasons</h1>
+			<div id='trip_reasons' style="height:600px;width:100%;"></div>
 		</div>
 	</body>
 </html>

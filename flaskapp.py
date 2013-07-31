@@ -222,6 +222,7 @@ def stats():
 	dataset1 = '[["Season", "Visitors"]'
 	dataset2 = '['
 	dataset3 = '[["Source", "Visitors"]'
+	dataset4 = '[["Reason", "Trips"]'
 
 	tripsDict1 = buildTripsDict()
 	yearDict = {}
@@ -285,6 +286,21 @@ def stats():
 
 	dataset3 += ']'
 	page = page.replace('DATASET3', dataset3)
+
+	tripsDict4 = buildTripsDict()
+	reasonDict = {}
+	for year in tripsDict4.keys():
+		for dateAndReason in tripsDict4[year].keys():
+			reason = dateAndReason.split('|')[1]
+			reasonDict[reason] = reasonDict.get(reason, 0) + 1
+	reasonList = reasonDict.items()
+	
+	reasonList.sort(key=lambda tup: tup[1], reverse=True)
+	for reason in reasonList:
+		dataset4 += ', ["' + reason[0] + '", ' + str(reason[1]) + ']'
+
+	dataset4 += ']'
+	page = page.replace('DATASET4', dataset4)
 
 	return page
 
