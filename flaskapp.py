@@ -218,21 +218,40 @@ def stats():
 	dataset1 = '[["Season", "Visitors"]'
 	dataset2 = '['
 	dataset3 = '[["Source", "Visitors"]'
-	yearDict = {}
-	with open('temp.csv', 'r') as csvfile:
-		reader = csv.reader(csvfile)
-		firstRow = True
-		for row in reader:
-			if not firstRow:
-				tripdate = row[2]
-				tripdate = tripdate[-4:]
-				if tripdate != "":
-					yearDict[tripdate] = yearDict.get(tripdate, 0) + 1
-			else:
-				firstRow = False
-	yearList = yearDict.items()
-	yearList.sort(key=lambda tup: tup[0])
+	#yearDict = {}
+	#with open('temp.csv', 'r') as csvfile:
+	#	reader = csv.reader(csvfile)
+	#	firstRow = True
+	#	for row in reader:
+	#		if not firstRow:
+	#			tripdate = row[2]
+	#			tripdate = tripdate[-4:]
+	#			if tripdate != "":
+	#				yearDict[tripdate] = yearDict.get(tripdate, 0) + 1
+	#		else:
+	#			firstRow = False
+	#yearList = yearDict.items()
+	#yearList.sort(key=lambda tup: tup[0])
 
+	#for year in yearList:
+	#	dataset1 += ', ["' + year[0] + '", ' + str(year[1]) + ']'
+
+	#dataset1 += ']'
+	#page = page.replace('DATASET1', dataset1)
+	tripsDict1 = buildTripsDict()
+	yearDict = {}
+	for year in tripsDict1.keys():
+		if year not in yearDict.keys():
+			yearDict[year] = []
+		for dateAndReason in tripsDict1[year].keys():
+			for person in tripsDict1[year][dateAndReason].keys():
+				if person not in yearDict[year]:
+					yearDict[year].append(person)
+	yearList = []
+	for year in yearDict.keys():
+		yearList.append( [ year, len(yearDict[year]) ] )
+	
+	yearList.sort(key=lambda tup: tup[0])
 	for year in yearList:
 		dataset1 += ', ["' + year[0] + '", ' + str(year[1]) + ']'
 
@@ -261,19 +280,39 @@ def stats():
 	dataset2 += ']'
 	page = page.replace('DATASET2', dataset2)
 
+	#sourceDict = {}
+	#with open('temp.csv', 'r') as csvfile:
+	#	reader = csv.reader(csvfile)
+	#	firstRow = True
+	#	for row in reader:
+	#		if not firstRow:
+	#			if len(row) >= 6:
+	#				sourceDict[row[5]] = sourceDict.get(row[5], 0) + 1
+	#		else:
+	#			firstRow = False
+	#sourceList = sourceDict.items()
+	#for entry in sourceList:
+	#	dataset3 += ', ["' + entry[0] + '", ' + str(entry[1]) + ']'
+	#dataset3 += ']'
+	#page = page.replace('DATASET3', dataset3)
+	tripsDict3 = buildTripsDict()
 	sourceDict = {}
-	with open('temp.csv', 'r') as csvfile:
-		reader = csv.reader(csvfile)
-		firstRow = True
-		for row in reader:
-			if not firstRow:
-				if len(row) >= 6:
-					sourceDict[row[5]] = sourceDict.get(row[5], 0) + 1
-			else:
-				firstRow = False
-	sourceList = sourceDict.items()
-	for entry in sourceList:
-		dataset3 += ', ["' + entry[0] + '", ' + str(entry[1]) + ']'
+	for year in tripsDict3.keys():
+		for dateAndReason in tripsDict3[year].keys():
+			for person in tripsDict3[year][dateAndReason].keys():
+				source = tripsDict3[year][dateAndReason][person]["source"]
+				if source not in sourceDict.keys():
+					sourceDict[source] = []
+				if person not in sourceDict[source]:
+					sourceDict[source].append(person)
+	sourceList = []
+	for source in sourceDict.keys():
+		sourceList.append( [ source, len(sourceDict[source]) ] )
+	
+	sourceList.sort(key=lambda tup: tup[1], reverse=True)
+	for source in sourceList:
+		dataset3 += ', ["' + source[0] + '", ' + str(source[1]) + ']'
+
 	dataset3 += ']'
 	page = page.replace('DATASET3', dataset3)
 
