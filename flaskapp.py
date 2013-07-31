@@ -482,17 +482,19 @@ def trip(date):
 		if date == itemDate and tripReason == urlify(itemReason):
 			dateAndReason = item
 			dateAndReasonDict = year[item]
+
+	peopleList = dateAndReasonDict.items()
+	peopleList.sort(key=lambda tup: tup[1]["index"])
 	
 	reason = dateAndReason.split('|')[1]
 	if reason != '':
 		reason = ' - ' + reason
-	dateHtml = '<h1>' + myDateToHumanDate(date) + reason + '<h1>'
+	visitorText = ' visitors'
+	if len(peopleList) == 1:
+		visitorText = ' visitor'
+	dateHtml = '<h1>' + myDateToHumanDate(date) + reason + ' - ' + str(len(peopleList)) + visitorText + '</h1>'
+
 	entriesHtml = ''
-
-	peopleList = dateAndReasonDict.items()
-	peopleList.sort(key=lambda tup: tup[1]["index"])
-
-	print peopleList
 
 	for item in peopleList:
 		person = item[0]
@@ -506,17 +508,6 @@ def trip(date):
 		entriesHtml += '<h4>' + str(date.month) + '/' + str(date.day) + '/' + str(date.year) + '</h4>'
 		entriesHtml += '<p>' + dateAndReasonDict[person]['entry'] + '<p>'
 
-	#for person in sorted(dateAndReasonDict.keys()):
-	#	date = dateAndReasonDict[person]["date"]
-	#	if entriesHtml != '':
-	#		entriesHtml += '<ul class="nav nav-list"><li class="divider"></li></ul>'
-	#	nickname = ''
-	#	if 'nickname' in dateAndReasonDict[person].keys():
-	#		nickname = ' - ' + dateAndReasonDict[person]['nickname']
-	#	entriesHtml += '<h3><a href=/visitors/' + urlify(person) + '>' + person + nickname + '</a></h3>'
-	#	entriesHtml += '<h4>' + str(date.month) + '/' + str(date.day) + '/' + str(date.year) + '</h4>'
-	#	entriesHtml += '<p>' + dateAndReasonDict[person]['entry'] + '<p>'
-	
 	page = page.replace('DATEANDREASON', dateHtml)
 	page = page.replace('ENTRIES', entriesHtml)
 
