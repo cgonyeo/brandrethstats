@@ -530,8 +530,12 @@ def visitors():
 	for year in tripsDict.keys():
 		for dateAndReason in tripsDict[year].keys():
 			for person in tripsDict[year][dateAndReason].keys():
-				if not person in people:
-					people.append(person)
+				name = person
+				if "nickname" in tripsDict[year][dateAndReason][person].keys():
+					name += ' - ' + tripsDict[year][dateAndReason][person]["nickname"]
+				name  += '|' + person
+				if not name in people:
+					people.append(name)
 	people.sort()
 	
 	counter = 0
@@ -541,15 +545,16 @@ def visitors():
 	visitors3 = ''
 	visitors4 = ''
 	for person in people:
-		personUrl = urlify(person)
+		personTokens = person.split('|')
+		personUrl = urlify(personTokens[1])
 		if counter <= numPeople / 4:
-			visitors1 += '<p><b><a href=/visitors/' + personUrl + '>' + person + '</a></b></p>'
+			visitors1 += '<p><b><a href=/visitors/' + personUrl + '>' + personTokens[0] + '</a></b></p>'
 		elif counter <= numPeople / 2:
-			visitors2 += '<p><b><a href=/visitors/' + personUrl + '>' + person + '</a></b></p>'
+			visitors2 += '<p><b><a href=/visitors/' + personUrl + '>' + personTokens[0] + '</a></b></p>'
 		elif counter <= numPeople * 3 / 4:
-			visitors3 += '<p><b><a href=/visitors/' + personUrl + '>' + person + '</a></b></p>'
+			visitors3 += '<p><b><a href=/visitors/' + personUrl + '>' + personTokens[0] + '</a></b></p>'
 		else:
-			visitors4 += '<p><b><a href=/visitors/' + personUrl + '>' + person + '</a></b></p>'
+			visitors4 += '<p><b><a href=/visitors/' + personUrl + '>' + personTokens[0] + '</a></b></p>'
 		counter += 1
 
 	page = page.replace('VISITORS1', visitors1)
