@@ -36,6 +36,7 @@ def buildTripsDict():
 	with open('temp.csv', 'r') as csvfile:
 		reader = csv.reader(csvfile)
 		firstRow = True
+		indexCounter = 0
 		for row in reader:
 			if not firstRow:
 				dateOfTrip = row[2]
@@ -97,8 +98,11 @@ def buildTripsDict():
 						
 					nameDict["entry"] = entry
 					nameDict["source"] = source
+					nameDict["index"] = indexCounter
 
 					outingDict[row[0]] = nameDict
+
+					indexCounter += 1
 			else:
 				firstRow = False
 	return tripsDict
@@ -218,26 +222,7 @@ def stats():
 	dataset1 = '[["Season", "Visitors"]'
 	dataset2 = '['
 	dataset3 = '[["Source", "Visitors"]'
-	#yearDict = {}
-	#with open('temp.csv', 'r') as csvfile:
-	#	reader = csv.reader(csvfile)
-	#	firstRow = True
-	#	for row in reader:
-	#		if not firstRow:
-	#			tripdate = row[2]
-	#			tripdate = tripdate[-4:]
-	#			if tripdate != "":
-	#				yearDict[tripdate] = yearDict.get(tripdate, 0) + 1
-	#		else:
-	#			firstRow = False
-	#yearList = yearDict.items()
-	#yearList.sort(key=lambda tup: tup[0])
 
-	#for year in yearList:
-	#	dataset1 += ', ["' + year[0] + '", ' + str(year[1]) + ']'
-
-	#dataset1 += ']'
-	#page = page.replace('DATASET1', dataset1)
 	tripsDict1 = buildTripsDict()
 	yearDict = {}
 	for year in tripsDict1.keys():
@@ -280,21 +265,6 @@ def stats():
 	dataset2 += ']'
 	page = page.replace('DATASET2', dataset2)
 
-	#sourceDict = {}
-	#with open('temp.csv', 'r') as csvfile:
-	#	reader = csv.reader(csvfile)
-	#	firstRow = True
-	#	for row in reader:
-	#		if not firstRow:
-	#			if len(row) >= 6:
-	#				sourceDict[row[5]] = sourceDict.get(row[5], 0) + 1
-	#		else:
-	#			firstRow = False
-	#sourceList = sourceDict.items()
-	#for entry in sourceList:
-	#	dataset3 += ', ["' + entry[0] + '", ' + str(entry[1]) + ']'
-	#dataset3 += ']'
-	#page = page.replace('DATASET3', dataset3)
 	tripsDict3 = buildTripsDict()
 	sourceDict = {}
 	for year in tripsDict3.keys():
@@ -503,7 +473,13 @@ def trip(date):
 	dateHtml = '<h1>' + myDateToHumanDate(date) + reason + '<h1>'
 	entriesHtml = ''
 
-	for person in sorted(dateAndReasonDict.keys()):
+	peopleList = dateAndReasonDict.items()
+	peopleList.sort(key=lambda tup: tup[1]["index"])
+
+	print peopleList
+
+	for item in peopleList:
+		person = item[0]
 		date = dateAndReasonDict[person]["date"]
 		if entriesHtml != '':
 			entriesHtml += '<ul class="nav nav-list"><li class="divider"></li></ul>'
@@ -513,6 +489,17 @@ def trip(date):
 		entriesHtml += '<h3><a href=/visitors/' + urlify(person) + '>' + person + nickname + '</a></h3>'
 		entriesHtml += '<h4>' + str(date.month) + '/' + str(date.day) + '/' + str(date.year) + '</h4>'
 		entriesHtml += '<p>' + dateAndReasonDict[person]['entry'] + '<p>'
+
+	#for person in sorted(dateAndReasonDict.keys()):
+	#	date = dateAndReasonDict[person]["date"]
+	#	if entriesHtml != '':
+	#		entriesHtml += '<ul class="nav nav-list"><li class="divider"></li></ul>'
+	#	nickname = ''
+	#	if 'nickname' in dateAndReasonDict[person].keys():
+	#		nickname = ' - ' + dateAndReasonDict[person]['nickname']
+	#	entriesHtml += '<h3><a href=/visitors/' + urlify(person) + '>' + person + nickname + '</a></h3>'
+	#	entriesHtml += '<h4>' + str(date.month) + '/' + str(date.day) + '/' + str(date.year) + '</h4>'
+	#	entriesHtml += '<p>' + dateAndReasonDict[person]['entry'] + '<p>'
 	
 	page = page.replace('DATEANDREASON', dateHtml)
 	page = page.replace('ENTRIES', entriesHtml)
