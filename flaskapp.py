@@ -31,6 +31,12 @@ def myDateToHumanDate(myDate):
 		myDateTokens[2] = myDateTokens[2][-1:]
 	return myDateTokens[1] + '/' + myDateTokens[2] + '/' + myDateTokens[0]
 
+def escapeEntry(entry):
+	entry = entry.replace('&', '&amp;')
+	entry = entry.replace('<', '&lt;')
+	entry = entry.replace('>', '&gt;')
+	return entry
+
 def buildTripsDict():
 	tripsDict = {}
 	with open('temp.csv', 'r') as csvfile:
@@ -48,6 +54,8 @@ def buildTripsDict():
 					yearDict = tripsDict[yearNum]
 					source = row[5]
 					reason = row[6]
+					if reason == '':
+						print row
 
 					if len(dateTokens[0]) is 1:
 						dateTokens[0] = '0' + dateTokens[0]
@@ -80,8 +88,9 @@ def buildTripsDict():
 					if len(row[1]) > 0:
 						nameDict["nickname"] = row[1]
 					nameDict["date"] = dateOfTrip
-
-					entryTokens = row[4].split('_')
+					
+					sourceEntry = escapeEntry(row[4])
+					entryTokens = sourceEntry.split('_')
 					entry = ''
 					openingTag = False
 					firstItem = True
