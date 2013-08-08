@@ -4,7 +4,8 @@
 		<title>Brandreth Statistics</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+		<script src="/jquery-1.10.2.min.js"></script>
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
 		<style>
 			body {
 				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -24,6 +25,8 @@
 				);
 
 				var options = {
+					title: 'Unique Visitors Per Year',
+					titleTextStyle: {fontSize: 24},
 					legend: {'position':'none'}
 				};
 
@@ -31,6 +34,7 @@
 				chart.draw(data, options);
 
 				//Visitors per trip: Annotated Timeline
+				/*
 				var data2 = new google.visualization.DataTable();
 				data2.addColumn('date', 'Date');
 				data2.addColumn('number', 'Visitors');
@@ -42,10 +46,12 @@
 
 				var annotatedtimeline = new google.visualization.AnnotatedTimeLine(document.getElementById('visitors_per_trip'));
 				var options2 = {
+					title: 'Visitors per Trip',
+					titleTextStyle: {fontSize: 24},
 					'displayAnnotations': true,
 					'fill': 50
 				};
-				annotatedtimeline.draw(data2, options2);
+				annotatedtimeline.draw(data2, options2);*/
 
 				//Sources of visitors: Pie chart
 				var data3 = new google.visualization.arrayToDataTable(
@@ -53,9 +59,11 @@
 				);
 
 				var options3 = {
+					title: 'Sources of Visitors',
+					titleTextStyle: {fontSize: 24}
 				};
 
-				var chart3 = new google.visualization.PieChart(document.getElementById('visitor_sources'));
+				var chart3 = new google.visualization.PieChart(document.getElementById('sources_of_visitors'));
 				chart3.draw(data3, options3);
 
 				//Trip reasons: Pie chart
@@ -64,6 +72,8 @@
 				);
 
 				var options4 = {
+					title: 'Reasons for Trips',
+					titleTextStyle: {fontSize: 24}
 				};
 
 				var chart4 = new google.visualization.PieChart(document.getElementById('trip_reasons'));
@@ -73,46 +83,39 @@
 		
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="brand" href="/">Brandreth Statistics</a>
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li><a href="/leaderboard">Leaderboard</a></li>
-							<li class='active'><a href="/trips">Statistics</a></li>
-							<li><a href="/trips">Trips</a></li>
-							<li><a href="/visitors">Visitors</a></li>
-							<li><a href="/search">Search</a></li>
-						</ul>
-					</div>
+		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
+			<div class="container">
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="/" class="navbar-brand">Brandreth Statistics</a>
+				<div class="nav-collapse collapse bs-navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/leaderboard">Leaderboard</a></li>
+						<li class="active"><a href="/stats">Statistics</a></li>
+						<li><a href="/trips">Trips</a></li>
+						<li><a href="/visitors">Visitors</a></li>
+						<li><a href="/search">Search</a></li>
+					</ul>
 				</div>
 			</div>
-		</div>	
-		<div class="span3 bs-docs-sidebar">
-			<ul class="nav nav-list bs-docs-sidenav affix">
-				<li><a href="#1"><i class="icon-chevron-right"></i> Visitors per year</a></li>
-				<li class="divider"></li>
-				<li><a href="#2"><i class="icon-chevron-right"></i> Visitors per trip</a></li>
-				<li class="divider"></li>
-				<li><a href="#3"><i class="icon-chevron-right"></i> Sources of Visitors</a></li>
-				<li class="divider"></li>
-				<li><a href="#4"><i class="icon-chevron-right"></i> Trip Reasons</a></li>
-			</ul>
 		</div>
-		<div class="span9 bs-docs-sidebar" style="position:relative;left:0px;right:0px;">
-			<h1 class="text-center" id="1">Unique Visitors Per Year</h1>
+		<div class="col-lg-2">
+			<div class="bs-sidebar affix">
+				<ul class="nav nav-pills nav-stacked bs-sidenav">
+					<li><a href="#visitors_per_year"> Visitors per year</a></li>
+					<li class="divider"></li>
+					<li><a href="#sources_of_visitors"> Sources of Visitors</a></li>
+					<li class="divider"></li>
+					<li><a href="#trip_reasons"> Reasons for Trips</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-10 bs-docs-sidebar" style="position:relative;left:0px;right:0px;">
 			<div id='visitors_per_year' style="height:600px;width:100%"></div>
-			<h1 class="text-center" id="2">Visitors Per Trip</h1>
-			<div id='visitors_per_trip' style="height:600px;width:100%;"></div>
-			<h1 class="text-center" id="3">Sources of Visitors</h1>
-			<div id='visitor_sources' style="height:600px;width:100%;"></div>
-			<h1 class="text-center" id="4">Trip Reasons</h1>
+			<div id='sources_of_visitors' style="height:600px;width:100%;"></div>
 			<div id='trip_reasons' style="height:600px;width:100%;"></div>
 		</div>
 	</body>
