@@ -1,3 +1,5 @@
+# This implementation is bad, and I do not-ok things in it. I rewrote this to be better in every way, its repo lives [here](https://github.com/dgonyeo/brandreth2.0)
+
 Brandreth Stats
 ===============
 
